@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decentralized Cryptographic Communications Interlink Network Platform</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            margin-top: 20px;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .sender-list {
+            background-color: #1f1f1f;
+            border: 1px solid #333;
+            border-radius: 0.25rem;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .sender-item {
+            cursor: pointer;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            text-overflow: ellipsis; /* Add ellipsis to the text */
+            overflow: hidden; /* Hide overflow text */
+            white-space: nowrap; /* Prevent text from wrapping */
+            max-width: 100%; /* Ensure the width is restricted */
+        }
+
+        .sender-item:hover {
+            background-color: #333;
+        }
+
+        .sender-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #444;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            color: #fff;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        .message-card {
+            background-color: #1f1f1f;
+            border: 1px solid #333;
+            border-radius: 0.25rem;
+            margin-bottom: 20px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            word-wrap: break-word;
+        }
+
+        .message-card h5 {
+            margin-bottom: 15px;
+        }
+
+        .message-card p {
+            margin-bottom: 10px;
+        }
+
+        .message-card .badge {
+            font-size: 100%;
+            margin-right: 10px;
+            background-color: #444;
+        }
+
+        .message-content {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #e0e0e0;
+        }
+
+        .small-text {
+            font-size: 0.875rem;
+            color: #b0b0b0;
+        }
+
+        .receiver-text {
+            font-size: 0.875rem;
+            color: #b0b0b0;
+        }
+
+        .talk-bubble {
+            margin: 10px 0;
+            display: inline-block;
+            position: relative;
+            max-width: 100%;
+            background-color: #333;
+            border-radius: 30px;
+            padding: 10px;
+        }
+
+        .talk-bubble.tri-right.btm-left:before {
+            content: ' ';
+            position: absolute;
+            width: 0;
+            height: 0;
+            left: -20px;
+            right: auto;
+            top: auto;
+            bottom: -20px;
+            border: 20px solid;
+            border-color: transparent transparent transparent #333;
+        }
+
+        .talk-bubble.tri-right.btm-left:after {
+            content: ' ';
+            position: absolute;
+            width: 0;
+            height: 0;
+            left: 0;
+            right: auto;
+            top: auto;
+            bottom: -10px;
+            border: 15px solid;
+            border-color: transparent transparent transparent #1f1f1f;
+        }
+
+        .talktext {
+            padding: 1em;
+            text-align: left;
+            line-height: 1.5em;
+        }
+
+        .talktext p {
+            /* remove webkit p margins */
+            -webkit-margin-before: 0em;
+            -webkit-margin-after: 0em;
+        }
+
+        .fixed-bottom-bar {
+            background-color: #1f1f1f;
+            color: #e0e0e0;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 25%;
+            text-align: center;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .receiver-text {
+            word-wrap: break-word;
+        }
+
+        .chat-header {
+            background-color: #1f1f1f;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #333;
+            word-break: break-all; /* This will forcefully break long words */
+            word-wrap: break-word; /* This will allow text to wrap for older browsers */
+        }
+
+        .chat-header h5 {
+            margin: 0;
+            font-size: 1.25rem;
+            color: #fff;
+            white-space: normal; /* This will ensure text can wrap */
+        }
+
+        .message-input-container {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background-color: #1f1f1f;
+            border-top: 1px solid #333;
+            position: fixed;
+            bottom: 50px;
+            width: 70%;
+            border-radius: 100px;
+        }
+
+        .message-input-container input {
+            flex-grow: 1;
+            margin-right: 10px;
+            border-radius: 20px;
+            padding: 10px;
+            border: 1px solid #333;
+            background-color: #333;
+            color: #e0e0e0;
+        }
+
+        .message-input-container button {
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: none;
+            background-color: #444;
+            color: #e0e0e0;
+            cursor: pointer;
+        }
+
+        .message-input-container button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="sender-list">
+                    <h5>Senders</h5>
+                    {% for sender, msgs in messages|groupby('sender') %}
+                    <div class="sender-item" onclick="showMessages('{{ sender }}', '{{ msgs[0].sender_public_key }}')">
+                        <div class="sender-avatar">{{ sender[0] }}</div>
+                        <div>{{ sender }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div id="chat-header" class="chat-header">
+                    <!-- Chat header will be dynamically updated based on sender selection -->
+                </div>
+                <div id="messages-container">
+                    <!-- Messages will be dynamically loaded here based on sender selection -->
+                </div>
+                <div class="message-input-container">
+                    <input type="text" id="message-input" placeholder="Type a message..." />
+                    <button onclick="sendMessage()">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="fixed-bottom-bar">
+        <div class="receiver-text">Receiver:</div>
+        <div class="receiver-text">{{ messages[0].receiver }}</div>
+    </div>
+
+    <script>
+        const messages2 = {{ messages|tojson }};
+        let currentReceiverPublicKey = messages2[0].receiver_public_key;
+
+        function showMessages(sender, receiverPublicKey) {
+            currentReceiverPublicKey = messages2[0].receiver_public_key;
+            const chatHeader = document.getElementById('chat-header');
+            chatHeader.innerHTML = `
+                <div class="sender-avatar">${sender[0]}</div>
+                <h5>${sender}</h5>
+            `;
+
+            const container = document.getElementById('messages-container');
+            container.innerHTML = '';
+
+            // Sort messages by timestamp in descending order (newest first)
+            const sortedMessages = messages2.filter(msg => msg.sender === sender).sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+            sortedMessages.forEach(msg => {
+                const messageCard = document.createElement('div');
+                messageCard.className = 'message-card';
+                
+                const messageContent = document.createElement('div');
+                messageContent.className = 'talk-bubble tri-right btm-left';
+                
+                const talkText = document.createElement('div');
+                talkText.className = 'talktext';
+                
+                const messageText = document.createElement('p');
+                messageText.className = 'message-content';
+                messageText.innerText = msg.message;
+                
+                const timestamp = document.createElement('p');
+                timestamp.className = 'small-text';
+                timestamp.innerText = `${msg.timestamp_formatted}`;
+                
+                talkText.appendChild(messageText);
+                talkText.appendChild(timestamp);
+                messageContent.appendChild(talkText);
+                messageCard.appendChild(messageContent);
+                
+                const details = document.createElement('div');
+                details.className = 'small-text';
+                details.innerHTML = `
+                    <p>Block Hash: ${msg.block_hash}</p>
+                    <p>Block Merkle Root: ${msg.block_merkle_root}</p>
+                    <p>Block Nonce: ${msg.block_nonce}</p>
+                `;
+                
+                messageCard.appendChild(details);
+                container.appendChild(messageCard);
+                container.appendChild(document.createElement('hr'));
+            });
+        }
+
+        function sendMessage() {
+            const messageInput = document.getElementById('message-input');
+            const message = messageInput.value;
+            
+            if (message.trim() === '') {
+                return;
+            }
+
+            console.log('Sending message:', message);
+            console.log('Receiver Public Key:', messages2[0].receiver);
+
+            fetch('/send', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: message,
+                    receiver_public_key: messages2[0].receiver
+                })
+            }).then(response => response.json())
+              .then(data => {
+                  if (data.success) {
+                      // Clear the input field
+                      messageInput.value = '';
+                      // Optionally, you can reload the messages or add the new message to the chat
+                  } else {
+                      alert('Failed to send message');
+                  }
+              });
+        }
+    </script>
+</body> 
+
+</html>
